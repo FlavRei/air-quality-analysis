@@ -1,0 +1,42 @@
+---
+- name: Update packages
+  apt:
+    update_cache: yes
+  tags: always
+
+- name: Install Java
+  apt:
+    name: default-jdk
+    state: present
+
+- name: Download Kafka
+  get_url:
+    url: "{{ download_url }}"
+    dest: "/tmp/kafka.tgz"
+    mode: '0644'
+
+- name: Extract Kafka
+  unarchive:
+    src: "/tmp/kafka.tgz"
+    dest: "/opt/"
+    remote_src: yes
+
+- name: Generate the server.properties configuration file with the correct IP
+  template:
+    src: server.properties.j2
+    dest: "{{ kafka_install_dir }}/config/server.properties"
+    backup: yes
+
+- name: Start ZooKeeper
+  shell: "nohup {{ kafka_install_dir }}/bin/zookeeper-server-start.sh {{ kafka_install_dir }}/config/zookeeper.properties > /tmp/zookeeper.log 2>&1 &"
+  args:
+    chdir: "{{ kafka_install_dir }}"
+  async: 0
+  poll: 0
+
+- name: Start Kafka
+  shell: "nohup {{ kafka_install_dir }}/bin/kafka-server-start.sh {{ kafka_install_dir }}/config/server.properties > /tmp/kafka.log 2>&1 &"
+  args:
+    chdir: "{{ kafka_install_dir }}"
+  async: 0
+  poll: 0

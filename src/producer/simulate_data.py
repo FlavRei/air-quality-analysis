@@ -7,7 +7,7 @@ from kafka import KafkaProducer
 
 fake = Faker()
 
-KAFKA_BOOTSTRAP_SERVERS = ['localhost:29092']
+KAFKA_BOOTSTRAP_SERVERS = ['34.155.116.106:9092']
 KAFKA_TOPIC = 'sensor_data'
 
 producer = KafkaProducer(
@@ -21,7 +21,7 @@ def generate_sensor_data():
     """
     data = {
         "sensor_id": f"sensor_{random.randint(1, 100)}",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now().isoformat(),
         "location": fake.city(),
         "measures": {
             "temperature": round(random.uniform(15, 35), 2),

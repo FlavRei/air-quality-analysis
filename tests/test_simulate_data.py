@@ -1,5 +1,5 @@
 import unittest
-from src.simulate_data import generate_sensor_data
+from producer.simulate_data import generate_sensor_data
 
 class TestGenerateSensorData(unittest.TestCase):
     def test_structure(self):

@@ -1,0 +1,6 @@
+---
+external_ip: "34.155.116.106"
+kafka_version: "3.3.1"
+scala_version: "2.13"
+kafka_install_dir: "/opt/kafka_{{ scala_version }}-{{ kafka_version }}"
+download_url: "https://archive.apache.org/dist/kafka/{{ kafka_version }}/kafka_{{ scala_version }}-{{ kafka_version }}.tgz"

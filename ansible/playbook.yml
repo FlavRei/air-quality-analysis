@@ -1,0 +1,5 @@
+- name: Deploy and configure Kafka on the GCP VM
+  hosts: kafka
+  become: yes
+  roles:
+    - kafka
