@@ -1,6 +1,6 @@
 provider "google" {
   project = "air-quality-analysis-451718"
-  region  = "europe-west9"
+  region  = var.region
 }
 
 resource "google_compute_network" "kafka_network" {
@@ -50,4 +50,15 @@ resource "google_compute_instance" "kafka_vm" {
 
 output "kafka_external_ip" {
   value = google_compute_instance.kafka_vm.network_interface[0].access_config[0].nat_ip
+}
+
+resource "google_composer_environment" "composer_env" {
+  name   = "air-quality-composer"
+  region = var.region
+
+  config {
+    software_config {
+      image_version = "composer-3-airflow-2.10.2"
+    }
+  }
 }
