@@ -54,7 +54,7 @@ jobs:
 
       - name: Activate Service Account
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" > key.json
+          echo '${{ secrets.GCP_SA_KEY }}' > key.json
           gcloud auth activate-service-account --key-file=key.json
           gcloud config set project air-quality-analysis-451718
       
