@@ -23,7 +23,7 @@ jobs:
         run: pip install poetry
 
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --no-root
 
       - name: Lint with flake8
         run: |
@@ -45,7 +45,7 @@ jobs:
         run: pip install poetry
 
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --no-root
       
       - name: Set up Google Cloud SDK
         uses: google-github-actions/auth@v2
