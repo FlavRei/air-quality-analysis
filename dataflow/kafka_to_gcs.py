@@ -3,11 +3,13 @@ from apache_beam.options.pipeline_options import PipelineOptions, SetupOptions
 from apache_beam.io.kafka import ReadFromKafka
 import json
 
+
 class DecodeKafkaMessage(beam.DoFn):
     def process(self, element):
         key, value = element
         record = json.loads(value.decode('utf-8'))
         yield record
+
 
 def run(argv=None):
     import argparse
@@ -23,7 +25,7 @@ def run(argv=None):
 
     with beam.Pipeline(options=pipeline_options) as p:
         records = (
-            p 
+            p
             | 'ReadFromKafka' >> ReadFromKafka(
                     consumer_config={'bootstrap.servers': known_args.bootstrap_servers},
                     topics=[known_args.topic],
@@ -32,10 +34,12 @@ def run(argv=None):
             | 'DecodeMessage' >> beam.ParDo(DecodeKafkaMessage())
         )
 
-        (records 
+        (
+            records
             | 'ConvertToJson' >> beam.Map(lambda r: json.dumps(r))
             | 'WriteToGCS' >> beam.io.WriteToText(known_args.output, file_name_suffix='.json')
         )
+
 
 if __name__ == '__main__':
     run()

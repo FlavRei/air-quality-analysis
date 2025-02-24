@@ -1,6 +1,7 @@
 import unittest
 from producer.simulate_data import generate_sensor_data
 
+
 class TestGenerateSensorData(unittest.TestCase):
     def test_structure(self):
         data = generate_sensor_data()
@@ -17,6 +18,7 @@ class TestGenerateSensorData(unittest.TestCase):
             if len(data["measures"]) < 4 or any(not isinstance(v, (int, float)) for v in data["measures"].values()):
                 anomalies += 1
         self.assertGreater(anomalies, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

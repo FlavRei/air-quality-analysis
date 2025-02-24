@@ -2,6 +2,7 @@ import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions, SetupOptions
 import json
 
+
 class CleanData(beam.DoFn):
     def process(self, element):
         record = json.loads(element)
@@ -12,6 +13,7 @@ class CleanData(beam.DoFn):
         measures.setdefault('co2', 0)
         record['measures'] = measures
         yield record
+
 
 def run(argv=None):
     import argparse
@@ -43,6 +45,7 @@ def run(argv=None):
                     create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED
                 )
         )
+
 
 if __name__ == '__main__':
     run()
