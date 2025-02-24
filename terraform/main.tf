@@ -1,5 +1,5 @@
 provider "google" {
-  project = "air-quality-analysis-451718"
+  project = var.project_id
   region  = var.region
 }
 
@@ -34,7 +34,7 @@ resource "google_compute_firewall" "kafka_firewall" {
 resource "google_compute_instance" "kafka_vm" {
   name         = "kafka-vm"
   machine_type = "e2-medium"
-  zone         = "europe-west9-c"
+  zone         = var.zone
 
   boot_disk {
     initialize_params {

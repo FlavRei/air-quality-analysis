@@ -51,6 +51,12 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Activate Service Account
+        run: |
+          echo "${{ secrets.GCP_SA_KEY }}" > key.json
+          gcloud auth activate-service-account --key-file=key.json
+          gcloud config set project air-quality-analysis-451718
       
       - name: Deploy DAGs to Cloud Composer
         run: |
