@@ -27,7 +27,10 @@ def run(argv=None):
         records = (
             p
             | 'ReadFromKafka' >> ReadFromKafka(
-                    consumer_config={'bootstrap.servers': known_args.bootstrap_servers},
+                    consumer_config={
+                        'bootstrap.servers': known_args.bootstrap_servers,
+                        'group.id': 'beam-consumer-group'
+                    },
                     topics=[known_args.topic],
                     max_num_records=known_args.max_records
                 )

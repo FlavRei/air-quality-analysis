@@ -6,6 +6,11 @@ from datetime import timedelta
 default_args = {
     'start_date': days_ago(1),
     'retry_delay': timedelta(minutes=5),
+    'dataflow_default_options': {
+        'project': 'air-quality-analysis-451718',
+        'region': 'europe-west1',
+        'temp_location': 'gs://air-quality-analysis-data/temp/'
+    }
 }
 
 with models.DAG(
@@ -23,11 +28,11 @@ with models.DAG(
             'bootstrap_servers': '34.155.116.106:9092',
             'topic': 'sensor_data',
             'output': 'gs://air-quality-analysis-data/raw/sensor_data',
-            'max_records': 10
+            'max_records': 10,
+            'worker_machine_type': 'n1-standard-4',
+            'use_public_ips': True
         },
-        location='europe-west9',
-        project_id='air-quality-analysis-451718',
-        temp_location='gs://air-quality-analysis-data/temp/',
+        location=default_args['dataflow_default_options']['region']
     )
 
     gcs_to_bigquery = DataflowCreatePythonJobOperator(
@@ -38,9 +43,7 @@ with models.DAG(
             'input': 'gs://air-quality-analysis-data/raw/sensor_data-*.json',
             'output_table': 'air-quality-analysis-451718:processed.sensor_data'
         },
-        location='europe-west9',
-        project_id='air-quality-analysis-451718',
-        temp_location='gs://air-quality-analysis-data/temp/',
+        location=default_args['dataflow_default_options']['region']
     )
 
     kafka_to_gcs >> gcs_to_bigquery
