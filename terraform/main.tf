@@ -52,13 +52,6 @@ output "kafka_external_ip" {
   value = google_compute_instance.kafka_vm.network_interface[0].access_config[0].nat_ip
 }
 
-resource "google_composer_environment" "composer_env" {
-  name   = "air-quality-composer"
-  region = var.region
-
-  config {
-    software_config {
-      image_version = "composer-3-airflow-2.10.2"
-    }
-  }
+resource "google_pubsub_topic" "kafka_data_topic" {
+  name = "kafka-data-topic"
 }

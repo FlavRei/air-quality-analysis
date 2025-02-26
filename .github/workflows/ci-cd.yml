@@ -58,10 +58,12 @@ jobs:
           gcloud auth activate-service-account --key-file=key.json
           gcloud config set project air-quality-analysis-451718
       
-      - name: Deploy DAGs to Cloud Composer
-        run: |
-          gsutil -m cp -r dags/* gs://europe-west9-air-quality-co-e1ddd4e5-bucket/dags/
-      
       - name: Deploy Dataflow pipelines
         run: |
           gsutil -m cp -r dataflow/* gs://air-quality-analysis-data/dataflow/
+
+      - name: Deploy Kafka Connect configuration
+        run: |
+          curl -X PUT -H "Content-Type: application/json" \
+            --data @kafka_connect/pubsub-sink.properties \
+            http://34.155.116.106:8083/connectors/pubsub-sink-connector/config
