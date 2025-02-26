@@ -1,42 +1,23 @@
 ---
-- name: Update packages
+- name: Install Docker
   apt:
-    update_cache: yes
-  tags: always
-
-- name: Install Java
-  apt:
-    name: default-jdk
+    name: docker.io
     state: present
+    update_cache: yes
 
-- name: Download Kafka
-  get_url:
-    url: "{{ download_url }}"
-    dest: "/tmp/kafka.tgz"
-    mode: '0644'
-
-- name: Extract Kafka
-  unarchive:
-    src: "/tmp/kafka.tgz"
-    dest: "/opt/"
-    remote_src: yes
-
-- name: Generate the server.properties configuration file with the correct IP
-  template:
-    src: server.properties.j2
-    dest: "{{ kafka_install_dir }}/config/server.properties"
-    backup: yes
-
-- name: Start ZooKeeper
-  shell: "nohup {{ kafka_install_dir }}/bin/zookeeper-server-start.sh {{ kafka_install_dir }}/config/zookeeper.properties > /tmp/zookeeper.log 2>&1 &"
+- name: Install Docker Compose
+  shell: |
+    ARCH=$(uname -m)
+    OS=$(uname -s)
+    curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-${OS}-${ARCH}" -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
   args:
-    chdir: "{{ kafka_install_dir }}"
-  async: 0
-  poll: 0
+    executable: /bin/bash
 
-- name: Start Kafka
-  shell: "nohup {{ kafka_install_dir }}/bin/kafka-server-start.sh {{ kafka_install_dir }}/config/server.properties > /tmp/kafka.log 2>&1 &"
-  args:
-    chdir: "{{ kafka_install_dir }}"
-  async: 0
-  poll: 0
+- name: Copy docker-compose.yml to VM
+  copy:
+    src: ../../../../docker-compose.yml
+    dest: /opt/docker-compose.yml
+
+- name: Launch Docker Compose services
+  shell: "docker-compose -f /opt/docker-compose.yml up -d"
