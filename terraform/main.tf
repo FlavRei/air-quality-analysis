@@ -31,6 +31,18 @@ resource "google_compute_firewall" "kafka_firewall" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+resource "google_compute_firewall" "allow_kafka_connect" {
+  name    = "allow-kafka-connect"
+  network = "kafka-network"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8083"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
 resource "google_compute_instance" "kafka_vm" {
   name         = "kafka-vm"
   machine_type = "e2-medium"
@@ -45,6 +57,10 @@ resource "google_compute_instance" "kafka_vm" {
   network_interface {
     network = google_compute_network.kafka_network.name
     access_config {}
+  }
+
+  metadata = {
+    ssh-keys = "flavian.reignault:${file(var.public_key_path)}"
   }
 }
 

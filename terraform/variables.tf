@@ -14,3 +14,8 @@ variable "zone" {
   default     = "europe-west9-c"
   description = "The GCP zone to deploy resources."
 }
+
+variable "public_key_path" {
+  type        = string
+  description = "The public key to use for SSH access."
+}
