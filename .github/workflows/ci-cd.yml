@@ -65,5 +65,5 @@ jobs:
       - name: Deploy Kafka Connect configuration
         run: |
           curl -X PUT -H "Content-Type: application/json" \
-            --data @kafka_connect/pubsub-sink.properties \
+            --data @kafka_connect/pubsub-config.json \
             http://34.155.116.106:8083/connectors/pubsub-sink-connector/config

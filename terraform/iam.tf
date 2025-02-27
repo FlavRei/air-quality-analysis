@@ -26,3 +26,9 @@ resource "google_project_iam_member" "bigquery_data_editor" {
   role    = "roles/bigquery.dataEditor"
   member  = "serviceAccount:${google_service_account.my_service_account.email}"
 }
+
+resource "google_project_iam_member" "pubsub_admin" {
+  project = var.project_id
+  role    = "roles/pubsub.admin"
+  member  = "serviceAccount:${google_service_account.my_service_account.email}"
+}
