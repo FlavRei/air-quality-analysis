@@ -45,5 +45,6 @@ services:
       CONNECT_REST_ADVERTISED_HOST_NAME: "34.155.116.106"
       CONNECT_PLUGIN_PATH: /usr/share/java,/usr/share/confluent-hub-components,/home/flavian_reignault/kafka/plugins
       NO_GCE_CHECK: "true"
+      CONNECT_LOG4J_ROOT_LOGLEVEL: "DEBUG"
     volumes:
       - /home/flavian_reignault/kafka/plugins:/home/flavian_reignault/kafka/plugins
