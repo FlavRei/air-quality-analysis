@@ -18,7 +18,7 @@ options = PipelineOptions(
 with beam.Pipeline(options=options) as p:
     (
         p
-        | "ReadFromPubSub" >> ReadFromPubSub(topic="projects/air-quality-analysis-451718/topics/kafka-data-topic")
+        | "ReadFromPubSub" >> ReadFromPubSub(subscription="projects/air-quality-analysis-451718/subscriptions/kafka-data-topic-sub")
         | "ParseMessage" >> beam.Map(parse_message)
         | "WriteToBigQuery" >> WriteToBigQuery(
             table="air-quality-analysis-451718:streaming.sensor_data",

@@ -71,3 +71,11 @@ output "kafka_external_ip" {
 resource "google_pubsub_topic" "kafka_data_topic" {
   name = "kafka-data-topic"
 }
+
+resource "google_pubsub_subscription" "kafka_data_sub" {
+  name  = "kafka-data-topic-sub"
+  topic = google_pubsub_topic.kafka_data_topic.name
+  ack_deadline_seconds = 20
+  message_retention_duration = "600s"
+}
+
