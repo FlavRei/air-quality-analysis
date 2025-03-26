@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: flink-jobmanager
+  namespace: flink
+spec:
+  serviceName: "flink-jobmanager"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink-jobmanager
+      component: jobmanager
+  template:
+    metadata:
+      labels:
+        app: flink-jobmanager
+        component: jobmanager
+    spec:
+      containers:
+        - name: jobmanager
+          image: gcr.io/air-quality-analysis-454417/flink-pyjob:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /secrets/credentials.json
+          volumeMounts:
+            - name: gcp-creds
+              mountPath: /secrets
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+      volumes:
+        - name: gcp-creds
+          secret:
+            secretName: gcp-credentials
+      tolerations:
+        - key: "node.kubernetes.io/disk-pressure"
+          operator: "Exists"
+          effect: "NoSchedule"

@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flink-pyjob-submission
+  namespace: flink
+spec:
+  template:
+    spec:
+      containers:
+      - name: flink-job-submit
+        image: gcr.io/air-quality-analysis-454417/flink-pyjob:latest
+        command: ["/opt/flink/bin/flink"]
+        args: ["run", "-m", "flink-jobmanager.flink.svc.cluster.local:8081", "-py", "/opt/flink/job-ingestion.py"]
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /secrets/credentials.json
+        volumeMounts:
+        - name: gcp-creds
+          mountPath: /secrets
+      restartPolicy: OnFailure
+      volumes:
+      - name: gcp-creds
+        secret:
+          secretName: gcp-credentials

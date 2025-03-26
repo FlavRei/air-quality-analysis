@@ -1,0 +1,7 @@
+jobmanager.rpc.address: flink-jobmanager.flink.svc.cluster.local
+rest.address: flink-jobmanager.flink.svc.cluster.local
+rest.bind-address: 0.0.0.0
+rest.port: 8081
+parallelism.default: 1
+jobmanager.memory.heap.size: 1024m
+taskmanager.numberOfTaskSlots: 4

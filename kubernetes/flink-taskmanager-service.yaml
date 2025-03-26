@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flink-taskmanager
+  namespace: flink
+spec:
+  type: ClusterIP
+  selector:
+    app: flink-taskmanager
+  ports:
+    - port: 6122
+      targetPort: 6122

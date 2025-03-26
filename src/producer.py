@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 from kafka import KafkaProducer
 
-KAFKA_BOOTSTRAP_SERVERS = ['34.58.195.179:9094']
+KAFKA_BOOTSTRAP_SERVERS = ['34.170.23.156:9094']
 TOPIC = 'air-quality'
 
 producer = KafkaProducer(

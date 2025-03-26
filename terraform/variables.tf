@@ -9,6 +9,12 @@ variable "region" {
   default     = "us-central1"
 }
 
+variable "zone" {
+  description = "Zone where to deploy the cluster"
+  type        = string
+  default     = "us-central1-a"
+}
+
 variable "credentials_file" {
   description = "Path to the service account JSON file"
   type        = string

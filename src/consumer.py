@@ -1,7 +1,7 @@
 import json
 from kafka import KafkaConsumer
 
-BOOTSTRAP_SERVERS = ['34.58.195.179:9094']  
+BOOTSTRAP_SERVERS = ['34.170.23.156:9094']  
 TOPIC = 'air-quality'
 
 consumer = KafkaConsumer(
